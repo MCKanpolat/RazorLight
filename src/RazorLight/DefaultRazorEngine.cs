@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Razor.Extensions;
 using Microsoft.AspNetCore.Razor.Language;
 using Microsoft.AspNetCore.Razor.Language.Extensions;
@@ -26,16 +26,14 @@ namespace RazorLight
 					builder.Features.Add(new RazorLightTemplateDocumentClassifierPass());
 					builder.Features.Add(new RazorLightAssemblyAttributeInjectionPass());
 					builder.Features.Add(new InstrumentationPass());
-
-
 					//builder.Features.Add(new ViewComponentTagHelperPass());
 
+					builder.AddTargetExtension(new TemplateTargetExtension()
+					{
+						TemplateTypeName = "global::RazorLight.Razor.RazorLightHelperResult",
+					});
 
-					//builder.AddTargetExtension(new TemplateTargetExtension()
-					//{
-					//    TemplateTypeName = "global::Microsoft.AspNetCore.Mvc.Razor.HelperResult",
-					//});
-
+					OverrideRuntimeNodeWriterTemplateTypeNamePhase.Register(builder);
 				});
 
 				return razorProjectEngine.Engine;
